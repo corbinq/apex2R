@@ -374,8 +374,8 @@ NumericMatrix buildMatrixC(const NumericVector& s, const NumericVector& n, const
         return(out);
 }
 
-
-bool all_lt( const std::vector<int64_t>& ii, const std::vector<int64_t>& nn ){
+template <typename T>
+bool all_lt( const std::vector<T>& ii, const std::vector<T>& nn ){
         for(int i = 0; i < ii.size(); ++i){
                 if( ii[i] >= nn[i] ){
                         return false;
@@ -384,7 +384,8 @@ bool all_lt( const std::vector<int64_t>& ii, const std::vector<int64_t>& nn ){
         return true;
 }
 
-void seq_to(std::vector<int64_t>& ii, const std::vector<int64_t>& n_var, const std::vector<std::vector<int64_t>>& pos, const int64_t& target){
+template <typename T>
+void seq_to(std::vector<T>& ii, const std::vector<T>& n_var, const std::vector<std::vector<T>>& pos, const T& target){
         for( int s = 0; s < ii.size(); s++ ){
                 while( pos[s][ii[s]] < target && ii[s] < n_var[s] ){
                         ii[s]++;
@@ -395,8 +396,8 @@ void seq_to(std::vector<int64_t>& ii, const std::vector<int64_t>& n_var, const s
 std::vector<std::vector<int64_t>> mergeIntersect(const std::vector<std::vector<int64_t>>& pos, const std::vector<StringVector>& ref, const std::vector<StringVector>& alt){
         int64_t N = pos.size();
         std::vector<std::vector<int64_t>> out(N);
-        std::vector<int> n_var(N);
-        std::vector<int> ii(N, 0);
+        std::vector<int64_t> n_var(N);
+        std::vector<int64_t> ii(N, 0);
         for( int i = 0 ; i < N; i++){
                 n_var[i] = pos[i].size();
         }
