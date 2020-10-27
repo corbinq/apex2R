@@ -284,7 +284,7 @@ class xzReader
                         open(filepath);
                 }
                 xzReader() {};
-                void finalize () { cache.clear(); };
+                ~xzReader() { cache.clear(); };
                 Rcpp::NumericVector getData(int64_t st, int64_t n_vals){
 
                         int64_t bytes_read = 1;
@@ -330,6 +330,7 @@ class xzReader
                         }
 
                         free(buffer);
+                        buffer = NULL;
 
                         return out_vec;
                 }
@@ -374,7 +375,7 @@ NumericMatrix buildMatrixC(const NumericVector& s, const NumericVector& n, const
 }
 
 
-bool all_lt( const std::vector<int>& ii, const std::vector<int>& nn ){
+bool all_lt( const std::vector<int64_t>& ii, const std::vector<int64_t>& nn ){
         for(int i = 0; i < ii.size(); ++i){
                 if( ii[i] >= nn[i] ){
                         return false;
@@ -383,7 +384,7 @@ bool all_lt( const std::vector<int>& ii, const std::vector<int>& nn ){
         return true;
 }
 
-void seq_to(std::vector<int>& ii, const std::vector<int>& n_var, const std::vector<IntegerVector>& pos, const int& target){
+void seq_to(std::vector<int64_t>& ii, const std::vector<int64_t>& n_var, const std::vector<std::vector<int64_t>>& pos, const int64_t& target){
         for( int s = 0; s < ii.size(); s++ ){
                 while( pos[s][ii[s]] < target && ii[s] < n_var[s] ){
                         ii[s]++;
@@ -452,7 +453,7 @@ std::vector<std::vector<int64_t>> mergeIntersect(const std::vector<std::vector<i
         return out;
 }
 
-NumericMatrix flipMatrix(NumericMatrix A, const IntegerVector& w_flip, const IntegerVector& w_good){
+NumericMatrix flipMatrix(NumericMatrix A, const NumericVector& w_flip, const NumericVector& w_good){
         int n = A.cols();
         for(const auto& i : w_good){
                 if( i < 1 || i > n ){
@@ -471,10 +472,10 @@ NumericMatrix flipMatrix(NumericMatrix A, const IntegerVector& w_flip, const Int
         return(A);
 };
 
-void finalize_xzReader( xzReader* pt ){
-        pt->finalize();
-        return;
-};
+//void finalize_xzReader( xzReader* pt ){
+//        pt->finalize();
+//        return;
+//};
 
 
 RCPP_EXPOSED_CLASS(xzReader)
@@ -490,7 +491,7 @@ RCPP_MODULE(mod_test) {
 
         .method("open", &xzReader::open, "Open an xz file.")
         .method("getData", &xzReader::getData, "Random access to uncompressed data from xz file.")
-        .finalizer( &finalize_xzReader )
+        // .finalizer( &finalize_xzReader )
         ;
 
 }
