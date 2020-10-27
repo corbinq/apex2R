@@ -6,7 +6,7 @@ require(Rcpp)
 Sys.setenv("PKG_CXXFLAGS"="-std=c++11")
 Rcpp::sourceCpp('xzReader.cpp') 
 
-xzReader$methods(finalize = function(){})
+# xzReader$methods(finalize = function(){})
 
 suffStats <- methods::setRefClass("suffStats", 
 	fields = c(
