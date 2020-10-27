@@ -41,12 +41,12 @@ sumStats <- methods::setRefClass("sumStats",
 		"ds_gene" = "data.table",
 		"vb" = "Rcpp_xzReader",
 		"vx" = "data.table",
-		"kp" = "integer",
+		"kp" = "numeric",
 		"genes" = "character",
-		"n_snps" = "integer",
-		"n_genes" = "integer",
-		"n_samples" = "integer",
-		"n_covar" = "integer"
+		"n_snps" = "numeric",
+		"n_genes" = "numeric",
+		"n_samples" = "numeric",
+		"n_covar" = "numeric"
 	)
 )
 
