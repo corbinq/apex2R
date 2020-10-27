@@ -179,13 +179,18 @@ sumStats$methods(
 
 		GtU <- as.matrix(vx[ss_idx,-c(1:10)])
 		
+		x_s <- as.numeric(2 * min(dsnp$b_s))
+		x_e <- as.numeric(sum(dsnp$b_n))
+
+		b_start <- as.numeric(dsnp$b_s - dsnp$b_s[1])
+
 		C <- buildMatrixC(
-			s = dsnp$b_s - dsnp$b_s[1], 
+			s = b_start, 
 			n = dsnp$b_n, 
 			m = dsnp$mac, 
-			x = vb$getData(2 * head(dsnp$b_s, 1), sum(dsnp$b_n) )
+			x = sm$vb$getData(x_s, x_e)
 		)
-		
+
 		V <- flipMatrix(
 			C - tcrossprod(GtU), 
 			which(dsnp$flipped==1), which(dsnp$flipped==0)
