@@ -188,7 +188,7 @@ sumStats$methods(
 			s = b_start, 
 			n = dsnp$b_n, 
 			m = dsnp$mac, 
-			x = sm$vb$getData(x_s, x_e)
+			x = vb$getData(x_s, x_e)
 		)
 
 		V <- flipMatrix(
