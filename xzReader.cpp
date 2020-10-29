@@ -81,9 +81,6 @@ class call_tracker
                                 return -1;
                         }
                         int x_i = -1;
-                        // Since n is fixed, and we expect serial
-                        // correlation, this may be faster than
-                        // a hash table in practice.
                         for(int i = n; i >= 0; i-- ){
                                 if( most_recent[i] == x ){
                                         x_i = i;
