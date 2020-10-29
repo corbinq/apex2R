@@ -24,27 +24,31 @@ double unflip(const int& f1, const int& f2){
 }
 
 unsigned int pack_dp(const double& x, const double& m0, const double& m1){
-        if( m0 > m1 ){
-                return pack_dp(x, m1, m0);
-        }else{
-                if( 2.0 * m0 < VBIN_T_MAX ){
-                        return (unsigned int) round(x);
-                }else{
-                        return (unsigned int) round(x/ceil((2.0*m0)/VBIN_T_MAX));
-                }
-        }
+	if( m0 > m1 ){
+		return pack_dp(x, m1, m0);
+	}else{
+		if( m0 <= 0.0 ){
+			return (unsigned int) 0;
+		}else if( 2.0 * m0 < VBIN_T_MAX && m0 == round(m0) && m1 == round(m1) ){
+			return (unsigned int) round(x);
+		}else{
+			return (unsigned int) round(x/ceil((2.0*m0)/VBIN_T_MAX));
+		}
+	}
 }
 
 double unpack_dp(const double& x, const double& m0, const double& m1){
-        if( m0 > m1 ){
-                return unpack_dp(x, m1, m0);
-        }else{
-                if( 2.0 * m0 < VBIN_T_MAX ){
-                        return x;
-                }else{
-                        return x*ceil((2.0*m0)/VBIN_T_MAX);
-                }
-        }
+	if( m0 > m1 ){
+		return unpack_dp(x, m1, m0);
+	}else{
+		if( m0 <= 0.0 ){
+			return 0.0;
+		}else if( 2.0 * m0 < VBIN_T_MAX && m0 == round(m0) && m1 == round(m1) ){
+			return x;
+		}else{
+			return x*ceil((2.0*m0)/VBIN_T_MAX);
+		}
+	}
 }
 
 
