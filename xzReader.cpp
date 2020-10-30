@@ -32,7 +32,7 @@ unsigned int pack_dp(const double& x, const double& m0, const double& m1){
 		}else if( 2.0 * m0 < VBIN_T_MAX && m0 == round(m0) && m1 == round(m1) ){
 			return (unsigned int) round(x);
 		}else{
-			return (unsigned int) round(x/ceil((2.0*m0)/VBIN_T_MAX));
+			return (unsigned int) round(VBIN_T_MAX * x/ceil((2.0*m0)));
 		}
 	}
 }
@@ -46,7 +46,7 @@ double unpack_dp(const double& x, const double& m0, const double& m1){
 		}else if( 2.0 * m0 < VBIN_T_MAX && m0 == round(m0) && m1 == round(m1) ){
 			return x;
 		}else{
-			return x*ceil((2.0*m0)/VBIN_T_MAX);
+			return x*ceil(2.0*m0)/((double) VBIN_T_MAX);
 		}
 	}
 }
