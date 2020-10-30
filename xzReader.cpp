@@ -346,28 +346,21 @@ NumericMatrix buildMatrixC(const NumericVector& s, const NumericVector& n, const
         NumericMatrix out(sz, sz);
         for(int64_t i = 0; i < sz; i++ ){
                 if( m[i] > 0 ){
-                        if( s[i]-s0 < sz_x ){
-                                out(i,i) = x[s[i]-s0];
-                        }else{
+                        if( s[i]-s0 >= sz_x ){
                                 Rf_error("ERROR 1");
                         }
+			out(i,i) = unpack_dp(x[s[i]-s0], m[i], m[i]);
+			
                         int64_t n_i = i + n[i];
                         n_i = n_i < sz ? n_i : sz;
                         if( i < sz - 1 ){
                                 int64_t offset_i = s[i] - s0 - i;
                                 for(int64_t j = i + 1; j < n_i; j++){
-                                        double val = 0;
-                                        if( offset_i + j < sz_x ){
-                                                val = x[offset_i + j];
-                                        }else{
+                                        if( offset_i + j >= sz_x ){
                                                 Rf_error("ERROR 2");
                                         }
-                                        double m0 = m[i] < m[j] ? m[i] : m[j];
-                                        if( 2.0 * m0 >= VBIN_T_MAX ){
-                                                val *= ceil((2.0*m0)/VBIN_T_MAX);
-                                        }
-                                        out(j,i) = val;
-                                        out(i,j) = out(j,i);
+                                        out(j,i) = unpack_dp(x[offset_i + j], m[i], m[j]);
+					out(i,j) = out(j,i);
                                 }
                         }
                 }
