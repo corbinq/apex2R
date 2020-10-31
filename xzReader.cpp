@@ -18,7 +18,7 @@ static const size_t XZ_BUFFER_SIZE =  2 * 1024 * 1024;
 static const double mac_tol = 0.002;
 
 bool treat_as_int(const double& m){
-	return ( m - floor(m) < max_tol );	
+	return ( m - floor(m) < mac_tol );	
 }
 
 double unflip(const int& f1, const int& f2){
