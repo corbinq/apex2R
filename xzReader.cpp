@@ -15,6 +15,12 @@ static const long double VBIN_T_MAX = (pow(2,8*sizeof(vbin_t)) - 1);
 static const bool xz_mode = true;
 static const size_t XZ_BUFFER_SIZE =  2 * 1024 * 1024;
 
+static const double mac_tol = 0.002;
+
+bool treat_as_int(const double& m){
+	return ( m - floor(m) < max_tol );	
+}
+
 double unflip(const int& f1, const int& f2){
         if( f1 != f2 ){
                 return -1.0;
@@ -29,7 +35,7 @@ unsigned int pack_dp(const double& x, const double& m0, const double& m1){
 	}else{
 		if( m0 <= 0.0 ){
 			return (unsigned int) 0;
-		}else if( 2.0 * m0 < VBIN_T_MAX && m0 == round(m0) && m1 == round(m1) ){
+		}else if( 2.0 * m0 < VBIN_T_MAX && treat_as_int(m0) && treat_as_int(m1) ){
 			return (unsigned int) round(x);
 		}else{
 			return (unsigned int) round(VBIN_T_MAX * x/ceil((2.0*m0)));
@@ -43,7 +49,7 @@ double unpack_dp(const double& x, const double& m0, const double& m1){
 	}else{
 		if( m0 <= 0.0 ){
 			return 0.0;
-		}else if( 2.0 * m0 < VBIN_T_MAX && m0 == round(m0) && m1 == round(m1) ){
+		}else if( 2.0 * m0 < VBIN_T_MAX && treat_as_int(m0) && treat_as_int(m1)){
 			return x;
 		}else{
 			return x*ceil(2.0*m0)/((double) VBIN_T_MAX);
