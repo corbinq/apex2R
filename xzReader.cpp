@@ -15,7 +15,8 @@ static const long double VBIN_T_MAX = (pow(2,8*sizeof(vbin_t)) - 1);
 static const bool xz_mode = true;
 static const size_t XZ_BUFFER_SIZE =  2 * 1024 * 1024;
 
-static const double mac_tol = 0.001;
+static const int mac_dec = 6;
+static const double mac_tol = 2.00 * std::pow(0.1, (double) mac_dec);
 
 bool treat_as_int(const double& m){
 	return ( m - round(m) < mac_tol );	
