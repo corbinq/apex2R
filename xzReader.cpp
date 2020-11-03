@@ -19,7 +19,7 @@ static const int mac_dec = 6;
 static const double mac_tol = 2.00 * std::pow(0.1, (double) mac_dec);
 
 bool treat_as_int(const double& m){
-	return ( m - round(m) < mac_tol );	
+	return ( std::abs(m - round(m)) < mac_tol );	
 }
 
 double unflip(const int& f1, const int& f2){
