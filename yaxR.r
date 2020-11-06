@@ -164,7 +164,7 @@ sumStats$methods(
 
 		data.table(dsnp[,1:6], beta = b, se = se, pval = pvals)[kp_gene,]
 	},
-	getV = function(gene, chrom, start, end, snp_names = TRUE){
+	getV = function(gene, chrom, start, end, snp_names = TRUE, adjusted = TRUE){
 		
 		if(missing(chrom)){
 			idx <- getCisRegion(gene)
@@ -177,8 +177,6 @@ sumStats$methods(
 		
 		dsnp <- vx[ss_idx,1:10]
 
-		GtU <- as.matrix(vx[ss_idx,-c(1:10)])
-		
 		x_s <- as.numeric(2 * min(dsnp$b_s))
 		x_e <- as.numeric(sum(dsnp$b_n))
 
@@ -191,11 +189,20 @@ sumStats$methods(
 			x = vb$getData(x_s, x_e)
 		)
 
-		V <- flipMatrix(
-			C - tcrossprod(GtU), 
-			which(dsnp$flipped==1), which(dsnp$flipped==0)
-		)
-		rm(C, GtU)
+		if( adjusted ){
+			GtU <- as.matrix(vx[ss_idx,-c(1:10)])
+			V <- flipMatrix(
+				C - tcrossprod(GtU), 
+				which(dsnp$flipped==1), which(dsnp$flipped==0)
+			)
+			rm(C, GtU)
+		}else{
+			V <- flipMatrix(
+				C - tcrossprod(2 * vx$mac[ss_idx]), 
+				which(dsnp$flipped==1), which(dsnp$flipped==0)
+			)
+			rm(C)
+		}
 		
 		if( snp_names ){
 			colnames(V) <- dsnp[,paste(chr,pos,ref,alt,sep='_'),]
@@ -432,8 +439,6 @@ finemapGene <- function(gene, object, gene_sf = NULL, gene_sm = NULL, L = 10, ve
 		gene_sm[,n_studies := as.numeric(NA),]
 	}
 	gene_sm[,n_studies := as.numeric(n_studies),]
-
-	# diag(gene_sf$XtX) <- abs(diag(gene_sf$XtX))
 
 	print(system.time(
 		fm_fit <- susie_suff_stat(
