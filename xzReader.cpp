@@ -373,8 +373,43 @@ NumericMatrix buildMatrixC(const NumericVector& s, const NumericVector& n, const
                         }
                 }
         }
-        return(out);
+        return out;
 }
+
+NumericVector buildVectorC(const int64_t& target, const NumericVector& s, const NumericVector& n, const NumericVector& m, const NumericVector& x){
+        int64_t sz = s.size();
+        int64_t sz_x = x.size();
+        int64_t s0 = s[0];
+	double m_t = m[target];
+	int64_t s_t = s[target];
+	int64_t n_t = n[target];
+
+        NumericVector out(sz);
+		
+	if( m_t <= 0 ){
+		return out;
+	}
+
+	for(int64_t i = 0; i < target; i++ ){
+		if( m[i] > 0 && n[i] > target - i ){
+			int64_t offset_i = s[i] - s0 + (target - i);
+			if( offset_i >= sz_x ){
+				Rf_error("ERROR: requested LD outside window.");
+			}
+			out(i) = unpack_dp(x[offset_i], m[i], m_t);
+		}
+	}
+	int64_t offset_i = s_t;
+	for(int64_t i = target; i < sz; i++ ){
+		if( offset_i >= sz_x || i - target >= n_t ){
+			Rf_error("ERROR: requested LD outside window.");
+		}
+		out(i) = unpack_dp(x[offset_i], m[i], m_t);
+		offset_i++;
+	}
+        return out;
+}
+
 
 template <typename T>
 bool all_lt( const std::vector<T>& ii, const std::vector<T>& nn ){
