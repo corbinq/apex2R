@@ -341,6 +341,14 @@ metaSumStats$methods(
 			x$getSuffStats(gene)
 		})
 		n_s <- length(use_studies)
+
+		kp_snps <- Reduce(intersect, lapply(sstats, function(x)  colnames(x$XtX) ) )
+		for( i in 1:n_s ){
+			ki <- colnames( sstats[[i]]$XtX ) %in% kp_snps
+			sstats[[i]]$XtX <- sstats[[i]]$XtX[ki,ki]
+			sstats[[i]]$Xty <- sstats[[i]]$Xty[ki]
+		}
+		
 		denom <- 0
 		for( i in 1:n_s ){
 			sstats[[i]]$w <- with(sstats[[i]], 
