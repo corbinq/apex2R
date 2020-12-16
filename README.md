@@ -1,4 +1,4 @@
-# yaxR
+# apex2R
 
 This repository contains code for multiple-variant xQTL meta-analysis in R. 
 
