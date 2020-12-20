@@ -1,4 +1,6 @@
 
+source("Apex2R.r")
+
 # single study
 
 prefix <- "chr20"
