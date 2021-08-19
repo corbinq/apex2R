@@ -1,13 +1,25 @@
 
+# load the script (and ignore Rcpp warning message).
 source("Apex2R.r")
 
-# single study
 
+# ------------------
+# single study summary statistics
+# ------------------
+
+# Assume we have files from APEX called "chr20.cis_sumstats.txt.gz", 
+# "chr20.vcov.bin", and "chr20.vcov.idx.gz" in the working durectory. 
 prefix <- "chr20"
 
+# This creates an object to query the files. 
 ss <- sumStats(prefix)
 
-# meta-analysis
+
+# ------------------
+# meta-analysis summary statistics
+# ------------------
+
+# Now suppose we have these APEX files for each of studies A, B, and C. 
 
 system.time(ssm <- metaSumStats(
 	studyA ="chr20.A",
@@ -18,6 +30,11 @@ system.time(ssm <- metaSumStats(
 # genes present in all studies	
 i_genes <- Reduce(intersect, lapply(ssm$study_data, function(x) x$genes))
 
+				    
+# ------------------
+# example plotting & analysis
+# ------------------
+				    
 gene <- "ENSG00000101004"
 
 ## Get XtY and XtX objects for specified gene
