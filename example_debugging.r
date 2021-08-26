@@ -9,7 +9,7 @@
 
 setwd("apex2R")
 source("Apex2R.r")
-setwd("...")
+setwd("..")
 
 ssm <- metaSumStats(
     G1000 ="G1000_DATA/OUTPUT/G1000_chr21",
