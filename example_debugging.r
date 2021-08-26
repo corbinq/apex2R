@@ -7,11 +7,13 @@
 # in R
 # -------------
 
-setwd("apex2R")source("Apex2R.r")setwd("...")
+setwd("apex2R")
+source("Apex2R.r")
+setwd("...")
 
 ssm <- metaSumStats(
-	G1000 ="G1000_DATA/OUTPUT/G1000_chr21",
-  HapMap ="HAPMAP_DATA/OUTPUT/hapmap_chr21"
+    G1000 ="G1000_DATA/OUTPUT/G1000_chr21",
+    HapMap ="HAPMAP_DATA/OUTPUT/hapmap_chr21"
 )
 
 # problematic gene
