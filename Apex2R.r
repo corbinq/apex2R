@@ -75,7 +75,7 @@ sumStats$methods(
 
 		.self$initFields(
 			prefix = file_prefix,
-			dscore = sapply(ds, function(x) x[-c(1:4)]),
+			dscore = lapply(ds, function(x) x[-c(1:4)]),
 			dreg = dreg_t,
 			ds_gene = data.table::fread(sg_f),
 			vb = xzReader$new(vb_f),
